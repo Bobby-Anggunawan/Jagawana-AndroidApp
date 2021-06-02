@@ -22,16 +22,6 @@ class HistoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         topAppBar = view.findViewById(R.id.topAppBar)
-
-        topAppBar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.setting -> {
-                    TODO("Layout Setting belum ada")
-                    true
-                }
-                else -> false
-            }
-        }
         topAppBar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }

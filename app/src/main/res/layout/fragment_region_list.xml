@@ -5,34 +5,26 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".ui.HistoryFragment">
+    tools:context=".ui.RegionListFragment">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBar"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:title="History"
-            app:navigationIcon="@drawable/ic_arrow_back_white_18dp"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+            app:title="Select Region" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Kalijati Region"
-        android:textAlignment="center"
-        android:background="?attr/colorPrimaryVariant"
-        android:textColor="?attr/colorOnPrimary"/>
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/notificationList"
+        android:id="@+id/regionList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_history"/>
+        tools:listitem="@layout/item_region_list"/>
 
 </LinearLayout>

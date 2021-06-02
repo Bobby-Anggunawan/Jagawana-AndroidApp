@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.MapsFragment">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
@@ -18,79 +18,33 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_dashboard_white_24dp"
         android:layout_margin="20dp"
-        android:background="@drawable/bg_circle_color_primary"/>
+        android:background="@drawable/bg_circle_color_primary"
+        android:contentDescription="To Dashboard" />
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/backdrop"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_gravity="bottom"
-        android:background="@color/white">
+        android:background="@color/white"
+        app:behavior_peekHeight="130dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <!--Bagian yang selalu kelihatan -->
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/mapPeekBottomSheet"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:text="Status"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginBottom="20dp"
-                android:textColor="?attr/colorPrimary"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView"
-                tools:text="Hutan Aman" />
-
-            <ImageButton
-                android:id="@+id/playButton"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:background="@drawable/bg_circle_color_primary"
-                android:src="@drawable/ic_play_arrow_white_24dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_margin="20dp"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <!--garis-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?attr/colorPrimary"/>
+            android:layout_height="130dp"
+            android:name="com.bangkit.jagawana.ui.MapItemBottomSheetFragment"/>
 
         <!--Bagian yang bisa disembunyiin(Digeser ke bawah) -->
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/history"
+            android:alpha="0"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:name="com.bangkit.jagawana.ui.HistoryFragment"/>
+    </FrameLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Rekaman Suara"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_margin="20dp"/>
-
-            <!--TODO: isi sendiri-->
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
-
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

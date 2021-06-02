@@ -3,15 +3,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/fragment_map">
+    app:startDestination="@+id/fragment_home_container">
     <fragment
         android:id="@+id/fragment_map"
         android:name="com.bangkit.jagawana.ui.MapsFragment"
         android:label="Home"
         tools:layout="@layout/fragment_maps"/>
+
     <fragment
-        android:id="@+id/fragment_history"
-        android:name="com.bangkit.jagawana.ui.HistoryFragment"
-        android:label="Register"
-        tools:layout="@layout/fragment_history"/>
+        android:id="@+id/fragment_home_container"
+        android:name="com.bangkit.jagawana.ui.HomeContainerFragment"
+        android:label="Bottom Navigation"
+        tools:layout="@layout/fragment_home_container"/>
+
+    <fragment
+        android:id="@+id/bottom_nav_home"
+        android:name="com.bangkit.jagawana.ui.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home"/>
+    <fragment
+        android:id="@+id/bottom_nav_notifikasi"
+        android:name="com.bangkit.jagawana.ui.NotificationFragment"
+        android:label="Notifikasi"
+        tools:layout="@layout/fragment_notification"/>
+    <fragment
+        android:id="@+id/bottom_nav_setting"
+        android:name="com.bangkit.jagawana.ui.SettingFragment"
+        android:label="Setting"
+        tools:layout="@layout/fragment_setting"/>
+    <fragment
+        android:id="@+id/fragment_regionList"
+        android:name="com.bangkit.jagawana.ui.RegionListFragment"
+        android:label="fragment_region_list"
+        tools:layout="@layout/fragment_region_list" />
 </navigation>
