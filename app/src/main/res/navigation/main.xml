@@ -36,4 +36,19 @@
         android:name="com.bangkit.jagawana.ui.RegionListFragment"
         android:label="fragment_region_list"
         tools:layout="@layout/fragment_region_list" />
+    <fragment
+        android:id="@+id/fragment_detailEvent"
+        android:name="com.bangkit.jagawana.ui.DetailEventFragment"
+        android:label="fragment_detail_event"
+        tools:layout="@layout/fragment_detail_event" />
+    <fragment
+        android:id="@+id/fragment_deviceList"
+        android:name="com.bangkit.jagawana.ui.DeviceListFragment"
+        android:label="fragment_device_list"
+        tools:layout="@layout/fragment_device_list" />
+    <fragment
+        android:id="@+id/fragment_detailDevice"
+        android:name="com.bangkit.jagawana.ui.DetailDeviceFragment"
+        android:label="fragment_detail_device"
+        tools:layout="@layout/fragment_detail_device" />
 </navigation>

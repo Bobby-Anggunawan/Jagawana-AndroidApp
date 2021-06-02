@@ -34,6 +34,9 @@ class HomeFragment : Fragment() {
 
             findNavController().navigate(R.id.fragment_map, bundle)
         }
+        binding.listDeviceButton.setOnClickListener {
+            findNavController().navigate(R.id.fragment_deviceList)
+        }
         //nama region aktif di set di list region fragment
         binding.textButton.text = MyRepository().readIdPreference(requireActivity(), "namaRegionAktif")
         binding.textButton.setOnClickListener {

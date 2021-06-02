@@ -28,4 +28,15 @@ class RemoteDataSource {
                 return gson.fromJson(response.body!!.string(), Array<DeviceDataMod>::class.java)
             }
     }
+
+    fun getSingleResult(resId: String): EventResultDataMod{
+        val myUrl = "https://xenon-anthem-312407.et.r.appspot.com/getresultid?id=$resId"
+        val client = OkHttpClient()
+        val request = Request.Builder().url(myUrl)
+        client.newCall(request.build()).execute()
+            .use { response ->
+                val gson = Gson()
+                return gson.fromJson(response.body!!.string(), Array<EventResultDataMod>::class.java)[0]
+            }
+    }
 }

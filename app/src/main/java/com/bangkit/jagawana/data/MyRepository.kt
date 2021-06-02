@@ -3,8 +3,10 @@ package com.bangkit.jagawana.data
 import android.app.Activity
 import android.content.Context
 import androidx.room.Room
+import com.bangkit.jagawana.data.model.DetailDeviceDataMod
 import com.bangkit.jagawana.data.model.DeviceDataMod
 import com.bangkit.jagawana.data.model.EventResultDataMod
+import com.bangkit.jagawana.ui.adapter.RegionHistoryAdapter
 import com.bangkit.jagawana.ui.adapter.RegionLListAdapter
 import com.bangkit.jagawana.utility.function.TimeDiff
 
@@ -95,5 +97,40 @@ class MyRepository() {
             if(!regionExist) data.add(RegionLListAdapter.RowData(deviceData.region, deviceData.latitude, deviceData.longitude))
         }
         return data
+    }
+
+    fun getRegionHisory(activity: Activity): ArrayList<RegionHistoryAdapter.RowData>{
+        val data = arrayListOf<RegionHistoryAdapter.RowData>()
+        remote.getAllResult().forEach {
+            if(it.region == readIdPreference(activity, "namaRegionAktif")){
+                data.add(RegionHistoryAdapter.RowData(it.idDevice, it.classifyResult, it.timestamp, it.idClip))
+            }
+        }
+        return data
+    }
+
+    fun getNumDevicePerRegion(regionName: String): Int{
+        var ret = 0
+        remote.getAllDevice().forEach {
+            if(it.region == regionName) ret++
+        }
+        return ret
+    }
+
+    fun populateDetailDeviceFragment(deviceName: String): DetailDeviceDataMod {
+        val ret = DetailDeviceDataMod()
+        ret.status = "Aktif"
+        remote.getAllResult().forEach {
+            if(it.idDevice == deviceName){
+                ret.lastTransmission = it.timestamp
+                val koordinat = "${it.latitude}   ${it.longitude}"
+                ret.location = koordinat
+
+                ret.listRecord.add(RegionHistoryAdapter.RowData(it.idDevice, it.classifyResult, it.timestamp, it.idClip))
+            }
+        }
+        ret.totalRecord = ret.listRecord.count().toString()
+
+        return ret
     }
 }
