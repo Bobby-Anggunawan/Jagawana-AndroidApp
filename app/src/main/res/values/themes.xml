@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.Jagawana" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/red</item>
-        <item name="colorPrimaryVariant">@color/dark_red</item>
+        <item name="colorPrimary">@color/hijau_muda</item>
+        <item name="colorPrimaryVariant">@color/hijau_tua</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>

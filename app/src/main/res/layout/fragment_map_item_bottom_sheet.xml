@@ -6,25 +6,43 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.MapItemBottomSheetFragment">
+    tools:context=".ui.MapItemBottomSheetFragment"
+    android:background="@drawable/round_corner_backdrop">
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="19dp"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <View
+        android:layout_width="50dp"
+        android:layout_height="2dp"
+        android:background="@color/grey"
+        app:layout_constraintBottom_toBottomOf="@+id/separator"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/pesanSeret"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/separator">
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
+            android:text="33 Device Connected"
             android:textColor="@color/black"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="33 Device Connected" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView2"
@@ -32,10 +50,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
+            android:text="Hutan Aman"
             android:textColor="?attr/colorPrimary"
             android:textSize="23sp"
-            android:textStyle="bold"
-            android:text="Hutan Aman" />
+            android:textStyle="bold" />
     </LinearLayout>
 
     <ImageButton
@@ -49,7 +67,7 @@
         android:src="@drawable/ic_play_arrow_white_24dp"
         app:layout_constraintBottom_toTopOf="@+id/pesanSeret"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/separator" />
 
     <FrameLayout
         android:id="@+id/pesanSeret"

@@ -1,5 +1,7 @@
 package com.bangkit.jagawana.ui
 
+import android.media.AudioAttributes
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -67,5 +69,20 @@ class MapItemBottomSheetFragment : Fragment() {
         catch (e: Exception){}
         val txt = "$deviceNum Device Connected"
         binding.textView.text = txt
+
+        binding.playButton.setOnClickListener {
+            val url = MyRepository().readIdPreference(requireActivity(), MyRepository.keys.urlSound)
+            val mediaPlayer = MediaPlayer().apply {
+                setAudioAttributes(
+                    AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                        .build()
+                )
+                setDataSource(url)
+                prepare() // might take long! (for buffering, etc)
+                start()
+            }
+        }
     }
 }

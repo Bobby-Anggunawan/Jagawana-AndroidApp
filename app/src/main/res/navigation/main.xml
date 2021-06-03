@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/fragment_home_container">
+    app:startDestination="@+id/splashFragment">
     <fragment
         android:id="@+id/fragment_map"
         android:name="com.bangkit.jagawana.ui.MapsFragment"
@@ -51,4 +51,9 @@
         android:name="com.bangkit.jagawana.ui.DetailDeviceFragment"
         android:label="fragment_detail_device"
         tools:layout="@layout/fragment_detail_device" />
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.bangkit.jagawana.ui.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" />
 </navigation>

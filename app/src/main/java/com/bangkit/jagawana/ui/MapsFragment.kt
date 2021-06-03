@@ -14,6 +14,7 @@ import com.bangkit.jagawana.data.RemoteDataSource
 import com.bangkit.jagawana.data.model.DeviceDataMod
 import com.bangkit.jagawana.databinding.FragmentMapsBinding
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.MAP_TYPE_HYBRID
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -71,11 +72,21 @@ class MapsFragment : Fragment() {
         }
         device.forEach {
             val pos = LatLng(it.latitude, it.longitude)
-            val mark = googleMap.addMarker(MarkerOptions().position(pos).title(it.idDevice))
-            if(mark != null){
-                mark.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-                markerlist.add(mark)
+            val regionName = MyRepository().readIdPreference(requireActivity(), "namaRegionAktif")
+            if(it.region == regionName){
+                val mark = googleMap.addMarker(MarkerOptions().position(pos).title(it.idDevice))
+                if(mark != null){
+                    mark.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                    markerlist.add(mark)
+                }
             }
+        }
+
+        googleMap.setOnMarkerClickListener { marker ->
+            val bundle = Bundle()
+            bundle.putString("idDetailDevice", marker.title)
+            findNavController().navigate(R.id.fragment_detailDevice, bundle)
+            true
         }
 
         //gerakkan kamera ke region yang dipilih

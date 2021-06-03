@@ -13,6 +13,7 @@ import com.bangkit.jagawana.data.MyRepository
 import com.bangkit.jagawana.data.RemoteDataSource
 import com.bangkit.jagawana.data.model.DeviceDataMod
 import com.bangkit.jagawana.ui.adapter.RegionLListAdapter
+import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -32,6 +33,9 @@ class RegionListFragment : Fragment() {
 
         val myRecyclerView = view.findViewById<RecyclerView>(R.id.regionList)
         SetAdapter(myRecyclerView)
+        view.findViewById<MaterialToolbar>(R.id.topAppBar).setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
     }
 
     fun SetAdapter(myRecyclerView: RecyclerView){

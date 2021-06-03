@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bangkit.jagawana.R
 import com.bangkit.jagawana.data.MyRepository
 import com.bangkit.jagawana.data.RemoteDataSource
+import com.bangkit.jagawana.data.model.DeviceDataMod
 import com.bangkit.jagawana.ui.adapter.DeviceListAdapter
 import com.bangkit.jagawana.ui.adapter.RegionLListAdapter
+import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -31,13 +33,24 @@ class DeviceListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val data: ArrayList<DeviceListAdapter.RowData> = arrayListOf()
+        lateinit var realData : Array<DeviceDataMod>
         runBlocking {
             val getFromApi = async(Dispatchers.IO) { RemoteDataSource().getAllDevice() }
-            getFromApi.await().forEach {
-                data.add(DeviceListAdapter.RowData(it.idDevice, it.region))
+            realData = getFromApi.await()
+
+            val getFromApi2 = async(Dispatchers.IO) { MyRepository().getRegionList() }
+            getFromApi2.await().forEach { regionName ->
+                data.add(DeviceListAdapter.RowData(null, regionName.nama, true))
+                realData.forEach { device ->
+                    if(device.region == regionName.nama) data.add(DeviceListAdapter.RowData(device.idDevice, null, false))
+                }
             }
         }
         SetAdapter(view.findViewById(R.id.listDevice), data)
+
+        view.findViewById<MaterialToolbar>(R.id.topAppBar).setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
     }
 
 

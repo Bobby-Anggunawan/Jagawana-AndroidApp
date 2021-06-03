@@ -16,6 +16,7 @@ import com.bangkit.jagawana.databinding.FragmentDetailEventBinding
 import com.bangkit.jagawana.databinding.FragmentMapsBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -34,6 +35,10 @@ class DetailEventFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        view.findViewById<MaterialToolbar>(R.id.topAppBar).setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
 
         val bundle = this.arguments
         if (bundle != null) {

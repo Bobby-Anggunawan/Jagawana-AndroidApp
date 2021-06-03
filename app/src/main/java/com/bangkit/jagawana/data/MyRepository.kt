@@ -2,10 +2,12 @@ package com.bangkit.jagawana.data
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import androidx.room.Room
 import com.bangkit.jagawana.data.model.DetailDeviceDataMod
 import com.bangkit.jagawana.data.model.DeviceDataMod
 import com.bangkit.jagawana.data.model.EventResultDataMod
+import com.bangkit.jagawana.ui.adapter.NotificationAdapter
 import com.bangkit.jagawana.ui.adapter.RegionHistoryAdapter
 import com.bangkit.jagawana.ui.adapter.RegionLListAdapter
 import com.bangkit.jagawana.utility.function.TimeDiff
@@ -17,6 +19,7 @@ class MyRepository() {
         const val adaEventBaru = "event"
         const val adaEventBaru1 = "event1"
         const val jenisEvent = "jenisEvent"
+        const val urlSound = "urld"
         val eventBaruSudahDiTrigger = "sudah"
         val eventBaruBelumDiTrigger = "belum"
 
@@ -85,6 +88,9 @@ class MyRepository() {
         //untuk di MapItemBottomSheetFragment
         writeIdPreference(keys.adaEventBaru1, keys.eventBaruBelumDiTrigger, activity)
         writeIdPreference(keys.jenisEvent, event.classifyResult, activity)
+
+        //untuk play sound di mapitembottomsheet fragment
+        writeIdPreference(keys.urlSound, event.link, activity)
     }
 
     fun getRegionList(): ArrayList<RegionLListAdapter.RowData> {
@@ -131,6 +137,15 @@ class MyRepository() {
         }
         ret.totalRecord = ret.listRecord.count().toString()
 
+        return ret
+    }
+
+    fun getNotifikasi(): ArrayList<NotificationAdapter.RowData>{
+        val ret = arrayListOf<NotificationAdapter.RowData>()
+        remote.getAllResult().forEach {
+            val content = "${it.classifyResult} terdeteksi di region ${it.region}"
+            ret.add(NotificationAdapter.RowData(it.classifyResult, content, it.timestamp))
+        }
         return ret
     }
 }

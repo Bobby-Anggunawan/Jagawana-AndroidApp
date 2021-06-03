@@ -27,6 +27,13 @@ class HomeContainerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupSmoothBottomMenu()
+
+
+        //pop splash from backstack
+        try{
+            findNavController().popBackStack(R.id.splashFragment, true)
+        }
+        catch (e: Exception){}
     }
 
 

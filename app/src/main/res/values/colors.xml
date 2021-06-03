@@ -10,4 +10,11 @@
 
     <color name="red">#CC0F0F</color>
     <color name="dark_red">#B50C0C</color>
+
+    <color name="hijau_muda">#3E723A</color>
+    <color name="hijau_tua">#285224</color>
+    <color name="hijau_paling_muda">#0E9549</color>
+    <color name="grey">#808080</color>
+
+    <color name="transparan">#00000000</color>
 </resources>

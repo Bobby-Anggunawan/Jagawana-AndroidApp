@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bangkit.jagawana.R
+import com.google.android.gms.maps.model.Marker
 
 class RegionHistoryAdapter(val Data: ArrayList<RowData>): RecyclerView.Adapter<RegionHistoryAdapter.ItemData_Holder>() {
 

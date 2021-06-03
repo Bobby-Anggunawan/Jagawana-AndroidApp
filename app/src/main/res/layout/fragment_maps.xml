@@ -22,12 +22,12 @@
         android:contentDescription="To Dashboard" />
 
     <FrameLayout
+        android:background="@color/transparan"
         android:id="@+id/backdrop"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_gravity="bottom"
-        android:background="@color/white"
         app:behavior_peekHeight="130dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 

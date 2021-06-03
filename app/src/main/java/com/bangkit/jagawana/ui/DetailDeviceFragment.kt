@@ -16,6 +16,7 @@ import com.bangkit.jagawana.data.model.EventResultDataMod
 import com.bangkit.jagawana.databinding.FragmentDetailDeviceBinding
 import com.bangkit.jagawana.databinding.FragmentDetailEventBinding
 import com.bangkit.jagawana.ui.adapter.RegionHistoryAdapter
+import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -56,6 +57,10 @@ class DetailDeviceFragment : Fragment() {
         binding.totalRecord.text = pageData.totalRecord
 
         SetAdapter(binding.notificationList, pageData.listRecord)
+
+        view.findViewById<MaterialToolbar>(R.id.topAppBar).setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
     }
 
 
