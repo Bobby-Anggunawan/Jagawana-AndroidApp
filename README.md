@@ -21,7 +21,7 @@ This is a client application of Jagawana, an illegal logging prevention app. Thi
 
 ### UI Libraries We Use
 
-| Library name                                                      | Dependency                                                    | Demo                                                                        |
-| -------------                                                     | -------------                                                 | -------------                                                               |
-| [Material Design](https://material.io/)                           | ***Auto added by android studio***                            | ![Jagawana Appbar](https://i.ibb.co/GWzLKKz/Material-Design.png)            |
-| [SmoothBottomBar](https://github.com/ibrahimsn98/SmoothBottomBar) | implementation 'com.github.ibrahimsn98:SmoothBottomBar:1.7.6' | ![Jagawana SmoothBottomBar](https://i.ibb.co/JzZCFzF/Bottom-Navigation.png) |
+| Library name                                                      | Dependency                                                    | Demo                                                                                                                                |
+| -------------                                                     | -------------                                                 | -------------                                                                                                                       |
+| [Material Design](https://material.io/)                           | ***Auto added by android studio***                            | ![Jagawana Appbar](https://github.com/Bobby-Anggunawan/Jagawana-AndroidApp/blob/master/readme_assets/MaterialDesign.PNG)            |
+| [SmoothBottomBar](https://github.com/ibrahimsn98/SmoothBottomBar) | implementation 'com.github.ibrahimsn98:SmoothBottomBar:1.7.6' | ![Jagawana SmoothBottomBar](https://github.com/Bobby-Anggunawan/Jagawana-AndroidApp/blob/master/readme_assets/BottomNavigation.PNG) |
