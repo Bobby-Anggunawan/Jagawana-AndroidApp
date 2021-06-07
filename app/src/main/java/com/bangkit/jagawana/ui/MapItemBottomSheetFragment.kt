@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit
 
 class MapItemBottomSheetFragment : Fragment() {
     private lateinit var binding: FragmentMapItemBottomSheetBinding
-    val repo = MyRepository()
+    lateinit var repo: MyRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +40,9 @@ class MapItemBottomSheetFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //scheduller di sini
+
+        repo = MyRepository(requireContext())
+
         val scheduler: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor()
         scheduler.scheduleAtFixedRate(Runnable {
             //todo belum bisa play audio
@@ -60,8 +63,8 @@ class MapItemBottomSheetFragment : Fragment() {
         var deviceNum = 0
         try{
             runBlocking {
-                val getFromApi = async(Dispatchers.IO) { MyRepository().readIdPreference(requireActivity(), "namaRegionAktif")?.let {
-                    MyRepository().getNumDevicePerRegion(it)
+                val getFromApi = async(Dispatchers.IO) { repo.readIdPreference(requireActivity(), "namaRegionAktif")?.let {
+                    repo.getNumDevicePerRegion(it)
                 } }
                 deviceNum = getFromApi.await()!!
             }
@@ -71,7 +74,7 @@ class MapItemBottomSheetFragment : Fragment() {
         binding.textView.text = txt
 
         binding.playButton.setOnClickListener {
-            val url = MyRepository().readIdPreference(requireActivity(), MyRepository.keys.urlSound)
+            val url = repo.readIdPreference(requireActivity(), MyRepository.keys.urlSound)
             val mediaPlayer = MediaPlayer().apply {
                 setAudioAttributes(
                     AudioAttributes.Builder()

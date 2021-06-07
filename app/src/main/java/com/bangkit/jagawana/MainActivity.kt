@@ -9,9 +9,9 @@ import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
-    val repo = MyRepository()
-
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val repo = MyRepository(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 

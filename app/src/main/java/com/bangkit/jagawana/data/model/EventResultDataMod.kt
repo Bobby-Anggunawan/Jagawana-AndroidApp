@@ -1,7 +1,11 @@
 package com.bangkit.jagawana.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 data class EventResultDataMod(
-    val idClip: String,
+    @PrimaryKey val idClip: String,
     val idAudioFile: String,
     val startInterval: Int,
     val endInterval: Int,

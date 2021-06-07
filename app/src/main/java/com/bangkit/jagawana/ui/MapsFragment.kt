@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit
 class MapsFragment : Fragment() {
     private lateinit var binding: FragmentMapsBinding
     private var collapsBefore = true
-    val repo = MyRepository()
+    lateinit var repo: MyRepository
     val markerlist:  ArrayList<Marker> = arrayListOf()
 
     private val callback = OnMapReadyCallback { googleMap ->
@@ -72,7 +72,7 @@ class MapsFragment : Fragment() {
         }
         device.forEach {
             val pos = LatLng(it.latitude, it.longitude)
-            val regionName = MyRepository().readIdPreference(requireActivity(), "namaRegionAktif")
+            val regionName = repo.readIdPreference(requireActivity(), "namaRegionAktif")
             if(it.region == regionName){
                 val mark = googleMap.addMarker(MarkerOptions().position(pos).title(it.idDevice))
                 if(mark != null){
@@ -96,6 +96,26 @@ class MapsFragment : Fragment() {
             val longitude = bundle.getDouble("longitude", 0.0)
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), 6.0f))
         }
+
+
+        //scheduller di sini
+        val scheduler: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor()
+        scheduler.scheduleAtFixedRate(Runnable {
+            Log.e("myerr", markerlist.count().toString())
+            if(repo.readIdPreference(requireActivity(), MyRepository.keys.adaEventBaru) == MyRepository.keys.eventBaruBelumDiTrigger){
+                //tandai event sudah di trigger
+                repo.writeIdPreference(MyRepository.keys.adaEventBaru, MyRepository.keys.eventBaruSudahDiTrigger, requireActivity())
+
+                val idMarkerUntukDiubah = repo.readIdPreference(requireActivity(), MyRepository.keys.idDevicen)
+                markerlist.forEach {
+                    Log.e("myerr1", it.title.toString())
+                    Log.e("myerr2", idMarkerUntukDiubah.toString())
+                    if(it.title == idMarkerUntukDiubah){
+                        it.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                    }
+                }
+            }
+        }, 0, 1, TimeUnit.MINUTES) //periksa notifikasi tiap 1 menit jika aplikasi dibuka
     }
 
 
@@ -108,6 +128,9 @@ class MapsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        repo = MyRepository(requireContext())
+
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
 
@@ -118,21 +141,6 @@ class MapsFragment : Fragment() {
 
         setBackDrop(binding.backdrop)
 
-        //scheduller di sini
-        val scheduler: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor()
-        scheduler.scheduleAtFixedRate(Runnable {
-            if(repo.readIdPreference(requireActivity(), MyRepository.keys.adaEventBaru) == MyRepository.keys.eventBaruBelumDiTrigger){
-                //tandai event sudah di trigger
-                repo.writeIdPreference(MyRepository.keys.adaEventBaru, MyRepository.keys.eventBaruSudahDiTrigger, requireActivity())
-
-                val idMarkerUntukDiubah = repo.readIdPreference(requireActivity(), MyRepository.keys.isExistKey)
-                markerlist.forEach {
-                    if(it.title == idMarkerUntukDiubah){
-                        it.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                    }
-                }
-            }
-        }, 0, 1, TimeUnit.MINUTES) //periksa notifikasi tiap 1 menit jika aplikasi dibuka
     }
 
     fun setBackDrop(container: FrameLayout){

@@ -12,7 +12,7 @@ import com.bangkit.jagawana.ui.adapter.RegionHistoryAdapter
 import com.bangkit.jagawana.ui.adapter.RegionLListAdapter
 import com.bangkit.jagawana.utility.function.TimeDiff
 
-class MyRepository() {
+class MyRepository(val context: Context) {
 
     object keys{
         const val isExistKey = "qwerty"
@@ -20,26 +20,37 @@ class MyRepository() {
         const val adaEventBaru1 = "event1"
         const val jenisEvent = "jenisEvent"
         const val urlSound = "urld"
+        const val idDevicen = "untukUbahMarker"
         val eventBaruSudahDiTrigger = "sudah"
         val eventBaruBelumDiTrigger = "belum"
 
     }
 
     val remote = RemoteDataSource()
-    /*
+
     val db = Room.databaseBuilder(
         context,
         MyDatabase.AppDatabase::class.java, "JagawanaDB"
-    ).build()*/
+    ).build()
 
-    //from db
-    fun getRegionHistory(regionName: String) {
-        //return db.userDao().getRegionHistory(regionName)
+    fun devicePopulateDB(){
+        val data = remote.getAllDevice()
+
+        db.userDao().deleteAllDevice()
+        data.forEach {
+            db.userDao().newDevice(it)
+        }
     }
 
-    fun getDeviceAtRegion(regionName: String){
-        //return db.userDao().getDeviceOnARegion(regionName)
+    fun historyPopulateDB(){
+        val data = remote.getAllResult()
+
+        db.userDao().deleteAllHistory()
+        data.forEach {
+            db.userDao().newHistory(it)
+        }
     }
+
 
     fun writeIdPreference(key: String, value: String, activity: Activity) {
         val sharedPref = activity.getPreferences(Context.MODE_PRIVATE)
@@ -91,11 +102,22 @@ class MyRepository() {
 
         //untuk play sound di mapitembottomsheet fragment
         writeIdPreference(keys.urlSound, event.link, activity)
+
+        //untuk ubah warna marker yang mendeteksi event di map fragment
+        writeIdPreference(keys.idDevicen, event.idDevice, activity)
     }
 
     fun getRegionList(): ArrayList<RegionLListAdapter.RowData> {
         val data = arrayListOf<RegionLListAdapter.RowData>()
+        /*
         remote.getAllDevice().forEach {  deviceData->
+            var regionExist = false
+            data.forEach { RegionList ->
+                if(RegionList.nama == deviceData.region) regionExist = true
+            }
+            if(!regionExist) data.add(RegionLListAdapter.RowData(deviceData.region, deviceData.latitude, deviceData.longitude))
+        }*/
+        db.userDao().getAllDevice().forEach {  deviceData->
             var regionExist = false
             data.forEach { RegionList ->
                 if(RegionList.nama == deviceData.region) regionExist = true
@@ -107,7 +129,13 @@ class MyRepository() {
 
     fun getRegionHisory(activity: Activity): ArrayList<RegionHistoryAdapter.RowData>{
         val data = arrayListOf<RegionHistoryAdapter.RowData>()
+        /*
         remote.getAllResult().forEach {
+            if(it.region == readIdPreference(activity, "namaRegionAktif")){
+                data.add(RegionHistoryAdapter.RowData(it.idDevice, it.classifyResult, it.timestamp, it.idClip))
+            }
+        }*/
+        db.userDao().getAllHistory().forEach {
             if(it.region == readIdPreference(activity, "namaRegionAktif")){
                 data.add(RegionHistoryAdapter.RowData(it.idDevice, it.classifyResult, it.timestamp, it.idClip))
             }
@@ -117,7 +145,11 @@ class MyRepository() {
 
     fun getNumDevicePerRegion(regionName: String): Int{
         var ret = 0
+        /*
         remote.getAllDevice().forEach {
+            if(it.region == regionName) ret++
+        }*/
+        db.userDao().getAllHistory().forEach {
             if(it.region == regionName) ret++
         }
         return ret
@@ -126,7 +158,17 @@ class MyRepository() {
     fun populateDetailDeviceFragment(deviceName: String): DetailDeviceDataMod {
         val ret = DetailDeviceDataMod()
         ret.status = "Aktif"
+        /*
         remote.getAllResult().forEach {
+            if(it.idDevice == deviceName){
+                ret.lastTransmission = it.timestamp
+                val koordinat = "${it.latitude}   ${it.longitude}"
+                ret.location = koordinat
+
+                ret.listRecord.add(RegionHistoryAdapter.RowData(it.idDevice, it.classifyResult, it.timestamp, it.idClip))
+            }
+        }*/
+        db.userDao().getAllHistory().forEach {
             if(it.idDevice == deviceName){
                 ret.lastTransmission = it.timestamp
                 val koordinat = "${it.latitude}   ${it.longitude}"
@@ -142,7 +184,12 @@ class MyRepository() {
 
     fun getNotifikasi(): ArrayList<NotificationAdapter.RowData>{
         val ret = arrayListOf<NotificationAdapter.RowData>()
+        /*
         remote.getAllResult().forEach {
+            val content = "${it.classifyResult} terdeteksi di region ${it.region}"
+            ret.add(NotificationAdapter.RowData(it.classifyResult, content, it.timestamp))
+        }*/
+        db.userDao().getAllHistory().forEach{
             val content = "${it.classifyResult} terdeteksi di region ${it.region}"
             ret.add(NotificationAdapter.RowData(it.classifyResult, content, it.timestamp))
         }

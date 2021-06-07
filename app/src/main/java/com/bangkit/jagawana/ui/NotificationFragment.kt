@@ -38,7 +38,7 @@ class NotificationFragment : Fragment() {
 
         lateinit var allNotification: ArrayList<NotificationAdapter.RowData>
         runBlocking {
-            val getFromApi = async(Dispatchers.IO) { MyRepository().getNotifikasi() }
+            val getFromApi = async(Dispatchers.IO) { MyRepository(requireContext()).getNotifikasi() }
             allNotification = getFromApi.await()
         }
         SetAdapter(binding.notificationList, allNotification)

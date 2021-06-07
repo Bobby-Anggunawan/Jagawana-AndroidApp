@@ -20,6 +20,8 @@ import kotlinx.coroutines.runBlocking
 
 class RegionListFragment : Fragment() {
 
+    lateinit var repo: MyRepository
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,6 +33,8 @@ class RegionListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        repo = MyRepository(requireContext())
+
         val myRecyclerView = view.findViewById<RecyclerView>(R.id.regionList)
         SetAdapter(myRecyclerView)
         view.findViewById<MaterialToolbar>(R.id.topAppBar).setNavigationOnClickListener {
@@ -41,7 +45,7 @@ class RegionListFragment : Fragment() {
     fun SetAdapter(myRecyclerView: RecyclerView){
         lateinit var data: ArrayList<RegionLListAdapter.RowData>
         runBlocking {
-            val getFromApi = async(Dispatchers.IO) { MyRepository().getRegionList() }
+            val getFromApi = async(Dispatchers.IO) { repo.getRegionList() }
             data = getFromApi.await()
         }
 
@@ -51,9 +55,9 @@ class RegionListFragment : Fragment() {
 
         //mengatur onclick tiap item
         ListAdapter.onItemClick = {
-            MyRepository().writeIdPreference("namaRegionAktif", it.nama, requireActivity())
-            MyRepository().writeIdPreference("latitudeRegionAktif", it.latitude, requireActivity())
-            MyRepository().writeIdPreference("longitudeRegionAktif", it.longitude, requireActivity())
+            repo.writeIdPreference("namaRegionAktif", it.nama, requireActivity())
+            repo.writeIdPreference("latitudeRegionAktif", it.latitude, requireActivity())
+            repo.writeIdPreference("longitudeRegionAktif", it.longitude, requireActivity())
             findNavController().navigate(R.id.fragment_home_container)
         }
     }

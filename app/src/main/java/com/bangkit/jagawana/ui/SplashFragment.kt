@@ -9,6 +9,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bangkit.jagawana.R
+import com.bangkit.jagawana.data.MyRepository
+import com.bangkit.jagawana.data.RemoteDataSource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 
 
 class SplashFragment : Fragment() {
@@ -24,10 +29,23 @@ class SplashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /*
         val handler = Handler()
 
         handler.postDelayed({
             findNavController().navigate(R.id.fragment_home_container)
-        }, 1000);
+        }, 1000);*/
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val repo = MyRepository(requireContext())
+
+        runBlocking {
+            async(Dispatchers.IO) { repo.devicePopulateDB() }.await()
+            async(Dispatchers.IO) { repo.historyPopulateDB() }.await()
+        }
+        findNavController().navigate(R.id.fragment_home_container)
     }
 }

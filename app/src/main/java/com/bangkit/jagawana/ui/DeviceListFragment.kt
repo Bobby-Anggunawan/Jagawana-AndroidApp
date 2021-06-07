@@ -38,7 +38,7 @@ class DeviceListFragment : Fragment() {
             val getFromApi = async(Dispatchers.IO) { RemoteDataSource().getAllDevice() }
             realData = getFromApi.await()
 
-            val getFromApi2 = async(Dispatchers.IO) { MyRepository().getRegionList() }
+            val getFromApi2 = async(Dispatchers.IO) { MyRepository(requireContext()).getRegionList() }
             getFromApi2.await().forEach { regionName ->
                 data.add(DeviceListAdapter.RowData(null, regionName.nama, true))
                 realData.forEach { device ->

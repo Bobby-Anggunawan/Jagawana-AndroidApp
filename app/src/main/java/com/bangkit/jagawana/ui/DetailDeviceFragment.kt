@@ -45,7 +45,7 @@ class DetailDeviceFragment : Fragment() {
 
         lateinit var pageData: DetailDeviceDataMod
         runBlocking {
-            val getFromApi = async(Dispatchers.IO) { MyRepository().populateDetailDeviceFragment(deviceID) }
+            val getFromApi = async(Dispatchers.IO) { MyRepository(requireContext()).populateDetailDeviceFragment(deviceID) }
             pageData = getFromApi.await()
         }
 

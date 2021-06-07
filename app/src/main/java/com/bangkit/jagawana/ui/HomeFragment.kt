@@ -15,6 +15,8 @@ import com.bangkit.jagawana.databinding.FragmentHomeContainerBinding
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
 
+    lateinit var repo : MyRepository
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,10 +29,12 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        repo = MyRepository(requireContext())
+
         binding.MapsButton.setOnClickListener {
             val bundle = Bundle()
-            bundle.putDouble("latitude", MyRepository().readDoublePreference(requireActivity(), "latitudeRegionAktif"))
-            bundle.putDouble("longitude", MyRepository().readDoublePreference(requireActivity(), "longitudeRegionAktif"))
+            bundle.putDouble("latitude", repo.readDoublePreference(requireActivity(), "latitudeRegionAktif"))
+            bundle.putDouble("longitude", repo.readDoublePreference(requireActivity(), "longitudeRegionAktif"))
 
             findNavController().navigate(R.id.fragment_map, bundle)
         }
@@ -38,7 +42,7 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.fragment_deviceList)
         }
         //nama region aktif di set di list region fragment
-        binding.textButton.text = MyRepository().readIdPreference(requireActivity(), "namaRegionAktif")
+        binding.textButton.text = repo.readIdPreference(requireActivity(), "namaRegionAktif")
         binding.textButton.setOnClickListener {
             findNavController().navigate(R.id.fragment_regionList)
         }

@@ -22,6 +22,7 @@ import kotlinx.coroutines.runBlocking
 class HistoryFragment : Fragment() {
 
     lateinit var topAppBar: MaterialToolbar
+    lateinit var repo :MyRepository
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -31,20 +32,23 @@ class HistoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        repo = MyRepository(requireContext())
+
         topAppBar = view.findViewById(R.id.topAppBar)
         topAppBar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }
 
         SetAdapter(view.findViewById(R.id.notificationList))
-        view.findViewById<TextView>(R.id.namaRegion).text = MyRepository().readIdPreference(requireActivity(), "namaRegionAktif")
+        view.findViewById<TextView>(R.id.namaRegion).text = repo.readIdPreference(requireActivity(), "namaRegionAktif")
 
     }
 
     fun SetAdapter(myRecyclerView: RecyclerView){
         lateinit var data: ArrayList<RegionHistoryAdapter.RowData>
         runBlocking {
-            val getFromApi = async(Dispatchers.IO) { MyRepository().getRegionHisory(requireActivity()) }
+            val getFromApi = async(Dispatchers.IO) { repo.getRegionHisory(requireActivity()) }
             data = getFromApi.await()
         }
 

@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -69,5 +70,10 @@ dependencies {
 
     //bottom navigation
     implementation 'com.github.ibrahimsn98:SmoothBottomBar:1.7.6'
+
+    //room database
+    //room database
+    implementation("androidx.room:room-runtime:2.3.0")
+    kapt "androidx.room:room-compiler:2.3.0"
 
 }
