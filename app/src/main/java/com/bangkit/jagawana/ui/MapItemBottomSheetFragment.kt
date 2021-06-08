@@ -8,15 +8,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import com.bangkit.jagawana.R
 import com.bangkit.jagawana.data.MyRepository
 import com.bangkit.jagawana.data.RemoteDataSource
 import com.bangkit.jagawana.data.model.DeviceDataMod
 import com.bangkit.jagawana.databinding.FragmentMapItemBottomSheetBinding
 import com.bangkit.jagawana.databinding.FragmentMapsBinding
+import com.bangkit.jagawana.utility.function.TimeDiff
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.lang.Exception
 import java.util.concurrent.Executors
@@ -43,21 +47,37 @@ class MapItemBottomSheetFragment : Fragment() {
 
         repo = MyRepository(requireContext())
 
-        val scheduler: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor()
-        scheduler.scheduleAtFixedRate(Runnable {
-            //todo belum bisa play audio
-            if(repo.readIdPreference(requireActivity(), MyRepository.keys.adaEventBaru1) == MyRepository.keys.eventBaruBelumDiTrigger){
-                //tandai event sudah di trigger
-                repo.writeIdPreference(MyRepository.keys.adaEventBaru1, MyRepository.keys.eventBaruSudahDiTrigger, requireActivity())
+        viewLifecycleOwner.lifecycleScope.launch{
+            val regionName = repo.readIdPreference(requireActivity(), "namaRegionAktif")
+            if(regionName != null){
+                repo.getRegionLastHistory(regionName).collect { event->
+                    if(TimeDiff.inMinutes(event.timestamp) < 60){
+                        binding.playButton.visibility = View.VISIBLE
+                        binding.textView2.text = event.classifyResult
 
-                binding.playButton.visibility = View.VISIBLE
-                binding.textView2.text = repo.readIdPreference(requireActivity(), MyRepository.keys.jenisEvent)
+                        //set play button
+                        binding.playButton.setOnClickListener {
+                            val url = event.link
+                            val mediaPlayer = MediaPlayer().apply {
+                                setAudioAttributes(
+                                    AudioAttributes.Builder()
+                                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                                        .build()
+                                )
+                                setDataSource(url)
+                                prepare() // might take long! (for buffering, etc)
+                                start()
+                            }
+                        }
+                    }
+                    else{
+                        binding.playButton.visibility = View.GONE
+                        binding.textView2.text = "Hutan Aman"
+                    }
+                }
             }
-            else{
-                binding.playButton.visibility = View.GONE
-                binding.textView2.text = "Hutan Aman"
-            }
-        }, 0, 1, TimeUnit.MINUTES)
+        }
 
         //get device connected
         var deviceNum = 0
@@ -73,19 +93,5 @@ class MapItemBottomSheetFragment : Fragment() {
         val txt = "$deviceNum Device Connected"
         binding.textView.text = txt
 
-        binding.playButton.setOnClickListener {
-            val url = repo.readIdPreference(requireActivity(), MyRepository.keys.urlSound)
-            val mediaPlayer = MediaPlayer().apply {
-                setAudioAttributes(
-                    AudioAttributes.Builder()
-                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                        .setUsage(AudioAttributes.USAGE_MEDIA)
-                        .build()
-                )
-                setDataSource(url)
-                prepare() // might take long! (for buffering, etc)
-                start()
-            }
-        }
     }
 }

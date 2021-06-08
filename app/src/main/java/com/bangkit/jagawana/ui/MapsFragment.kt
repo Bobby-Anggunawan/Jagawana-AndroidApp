@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bangkit.jagawana.R
 import com.bangkit.jagawana.data.MyRepository
 import com.bangkit.jagawana.data.RemoteDataSource
 import com.bangkit.jagawana.data.model.DeviceDataMod
 import com.bangkit.jagawana.databinding.FragmentMapsBinding
+import com.bangkit.jagawana.utility.function.TimeDiff
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.MAP_TYPE_HYBRID
@@ -26,6 +28,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
@@ -36,51 +40,28 @@ class MapsFragment : Fragment() {
     private lateinit var binding: FragmentMapsBinding
     private var collapsBefore = true
     lateinit var repo: MyRepository
-    val markerlist:  ArrayList<Marker> = arrayListOf()
 
     private val callback = OnMapReadyCallback { googleMap ->
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
         googleMap.setMapType(MAP_TYPE_HYBRID)
 
 
-        /*
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))*/
-
-        //todo example marker
-        /*
-        googleMap.addMarker(
-            MarkerOptions()
-                .position(latLng)
-                .title("My Spot")
-                .snippet("This is my spot!")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-        )*/
-        lateinit var device: Array<DeviceDataMod>
-        runBlocking {
-            val getFromApi = async(Dispatchers.IO) { RemoteDataSource().getAllDevice() }
-            device = getFromApi.await()
-        }
-        device.forEach {
-            val pos = LatLng(it.latitude, it.longitude)
+        viewLifecycleOwner.lifecycleScope.launch{
             val regionName = repo.readIdPreference(requireActivity(), "namaRegionAktif")
-            if(it.region == regionName){
-                val mark = googleMap.addMarker(MarkerOptions().position(pos).title(it.idDevice))
-                if(mark != null){
-                    mark.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-                    markerlist.add(mark)
+            if(regionName != null){
+                repo.getMarketForMap(regionName).collect {
+                    it.forEach { md ->
+                        val pos = LatLng(md.latitude, md.longitude)
+                        val mark = googleMap.addMarker(MarkerOptions().position(pos).title(md.deviceId))
+
+                        if(mark != null){
+                            if(md.isRed) mark.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                            else mark.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                        }
+                    }
                 }
             }
         }
+
 
         googleMap.setOnMarkerClickListener { marker ->
             val bundle = Bundle()
@@ -96,26 +77,6 @@ class MapsFragment : Fragment() {
             val longitude = bundle.getDouble("longitude", 0.0)
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), 6.0f))
         }
-
-
-        //scheduller di sini
-        val scheduler: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor()
-        scheduler.scheduleAtFixedRate(Runnable {
-            Log.e("myerr", markerlist.count().toString())
-            if(repo.readIdPreference(requireActivity(), MyRepository.keys.adaEventBaru) == MyRepository.keys.eventBaruBelumDiTrigger){
-                //tandai event sudah di trigger
-                repo.writeIdPreference(MyRepository.keys.adaEventBaru, MyRepository.keys.eventBaruSudahDiTrigger, requireActivity())
-
-                val idMarkerUntukDiubah = repo.readIdPreference(requireActivity(), MyRepository.keys.idDevicen)
-                markerlist.forEach {
-                    Log.e("myerr1", it.title.toString())
-                    Log.e("myerr2", idMarkerUntukDiubah.toString())
-                    if(it.title == idMarkerUntukDiubah){
-                        it.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                    }
-                }
-            }
-        }, 0, 1, TimeUnit.MINUTES) //periksa notifikasi tiap 1 menit jika aplikasi dibuka
     }
 
 

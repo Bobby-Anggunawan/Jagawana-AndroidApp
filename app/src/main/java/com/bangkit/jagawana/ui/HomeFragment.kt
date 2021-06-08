@@ -6,11 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bangkit.jagawana.R
 import com.bangkit.jagawana.data.MyRepository
 import com.bangkit.jagawana.databinding.FragmentHomeBinding
 import com.bangkit.jagawana.databinding.FragmentHomeContainerBinding
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -42,7 +45,17 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.fragment_deviceList)
         }
         //nama region aktif di set di list region fragment
-        binding.textButton.text = repo.readIdPreference(requireActivity(), "namaRegionAktif")
+        val regionName = repo.readIdPreference(requireActivity(), "namaRegionAktif")
+        if(regionName != "null"){
+            binding.textButton.text = regionName
+        }
+        else{
+            viewLifecycleOwner.lifecycleScope.launch{
+                repo.getOneRegion().collect{
+                    binding.textButton.text = it.region
+                }
+            }
+        }
         binding.textButton.setOnClickListener {
             findNavController().navigate(R.id.fragment_regionList)
         }

@@ -14,7 +14,9 @@ object TimeDiff {
             return TimeUnit.MILLISECONDS.toMinutes(todayTime.timeInMillis - cmpTime.timeInMillis).toInt()
         }
         else{
-            throw IllegalStateException("Waktu untuk dibandingkan lebih dari waktu sekarang")
+            //kadang ngeselin lihat errornya
+            //throw IllegalStateException("Waktu untuk dibandingkan lebih dari waktu sekarang")
+            return Int.MAX_VALUE
         }
     }
 }
