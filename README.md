@@ -32,6 +32,10 @@ This is a client application of Jagawana, an illegal logging prevention app. Thi
 
 ## How To Make Thing Like We Made
 
+### Tutorial List
+
+* [How to make a RecyclerView](https://github.com/Bobby-Anggunawan/Jagawana-AndroidApp/wiki/How-to-make-a-RecyclerView)
+
 ### Libraries We Use
 
 | Library name                                                          | Usages                                            | Dependency                                                          |
