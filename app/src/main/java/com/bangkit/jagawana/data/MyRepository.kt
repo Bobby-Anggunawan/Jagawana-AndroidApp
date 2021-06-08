@@ -10,6 +10,7 @@ import com.bangkit.jagawana.data.model.EventResultDataMod
 import com.bangkit.jagawana.ui.adapter.NotificationAdapter
 import com.bangkit.jagawana.ui.adapter.RegionHistoryAdapter
 import com.bangkit.jagawana.ui.adapter.RegionLListAdapter
+import com.bangkit.jagawana.utility.function.Notifikasi
 import com.bangkit.jagawana.utility.function.TimeDiff
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -85,19 +86,22 @@ class MyRepository(val context: Context) {
         return sharedPref.getFloat(key, 0f).toDouble()
     }
 
-    fun periksaNotifikasi(activity: Activity){
+    fun periksaNotifikasi(activity: Activity, context: Context){
         val allFromServer = remote.getAllResult()
 
         val remoteRes = allFromServer[allFromServer.count() - 1]
         if(TimeDiff.inMinutes(remoteRes.timestamp) < 60){
             if(readIdPreference(activity, keys.isExistKey) != remoteRes.idClip){
-                triggerAlarm(remoteRes, activity)
+                triggerAlarm(remoteRes, activity, context)
             }
         }
     }
 
-    fun triggerAlarm(event: EventResultDataMod, activity: Activity){
-        //todo push notification
+    fun triggerAlarm(event: EventResultDataMod, activity: Activity, context: Context){
+
+        //buat notifikasi
+        val content = "${event.classifyResult} terdeteksi di region ${event.region}"
+        Notifikasi.showAlarmNotification(context, content)
 
         //write ke memory kalau notifikasi ini sudah pernah di trigger
         writeIdPreference(keys.isExistKey, event.idClip, activity)

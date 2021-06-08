@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         val scheduler: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor()
 
         scheduler.scheduleAtFixedRate(Runnable {
-            repo.periksaNotifikasi(this)
+            repo.periksaNotifikasi(this, this)
             Log.e("qwerty", "test")
         }, 0, 1, TimeUnit.MINUTES) //periksa notifikasi tiap 1 menit jika aplikasi dibuka
 
