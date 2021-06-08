@@ -15,6 +15,21 @@ Capstone project Bangkit 2021
 
 This is a client application of Jagawana, an illegal logging prevention app. This app displays where the IoT device is located and displays all the events captured by the connected IoT device. This application also in real time notifies the user if an emergency event occurs and shows the location of the event.
 
+### Team Members
+
+* Bobby Anggunawan (A1721801) - Mobile Programming (Android) - STMIK Mikroskil
+* Marsya Yeece Jenniffer (A3092763) - Mobile Programming (Android) - Universitas Sam Ratulangi
+* Jeffry Haryanto Gunawan (C2442279) - Cloud Computing - Universitas Kristen Petra
+* Rini Aprilianty Riadi (C2142092) - Cloud Computing - Universitas Islam Indonesia
+* Harisno (M0080883) - Machine Learning - Universitas Gadjah Mada
+* Nico Renaldo (M0080886) - Machine Learning - Universitas Gadjah Mada
+
+### Another Jagawana Github Path
+
+* [Cloud](https://github.com/jeffrywu28/jagawana-cloud)
+* [Internet of Things](https://github.com/nicorenaldo/jagawana-iot)
+* [Machine Learning](https://github.com/nicorenaldo/jagawana-ml)
+
 ## How To Make Thing Like We Made
 
 ### Libraries We Use
