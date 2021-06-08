@@ -1,14 +1,19 @@
+<img src="https://github.com/Bobby-Anggunawan/Jagawana-AndroidApp/blob/master/readme_assets/jagawana_logo_final.jpeg" width="100" height="100" align="right" />
+
 # Jagawana-AndroidApp
-Capstone project Bangkit
+Capstone project Bangkit 2021
+
+[![Mockup](https://img.shields.io/badge/mockup-PSDMockups-informational.svg)](https://www.psdmockups.com/mobile-android-samsung-smartphone-psd-mockup/)
+![Build](https://img.shields.io/badge/build-passing-success.svg)
+![Server](https://img.shields.io/badge/server_status-Active-critical.svg)
+![Version](https://img.shields.io/badge/kotlin-1.5.0-informational.svg)
+
+
+![Jagawana](https://github.com/Bobby-Anggunawan/Jagawana-AndroidApp/blob/master/readme_assets/AppScreenshot.jpg)
 
 ## About Our App
 
 This is a client application of Jagawana, an illegal logging prevention app. This app displays where the IoT device is located and displays all the events captured by the connected IoT device. This application also in real time notifies the user if an emergency event occurs and shows the location of the event.
-
-### Screenshot
-![Home](https://github.com/Bobby-Anggunawan/Jagawana-AndroidApp/blob/master/readme_assets/AppScreenshot1.jpg)
-![Map](https://github.com/Bobby-Anggunawan/Jagawana-AndroidApp/blob/master/readme_assets/AppScreenshot2.jpg)
-![Region History](https://github.com/Bobby-Anggunawan/Jagawana-AndroidApp/blob/master/readme_assets/AppScreenshot3.jpeg)
 
 ## How To Make Thing Like We Made
 
