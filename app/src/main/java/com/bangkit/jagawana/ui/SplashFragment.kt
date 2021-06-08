@@ -2,6 +2,7 @@ package com.bangkit.jagawana.ui
 
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,26 +27,20 @@ class SplashFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_splash, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        /*
-        val handler = Handler()
-
-        handler.postDelayed({
-            findNavController().navigate(R.id.fragment_home_container)
-        }, 1000);*/
-    }
-
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
 
         val repo = MyRepository(requireContext())
 
-        runBlocking {
-            async(Dispatchers.IO) { repo.devicePopulateDB() }.await()
-            async(Dispatchers.IO) { repo.historyPopulateDB() }.await()
-        }
-        findNavController().navigate(R.id.fragment_home_container)
+        val handler = Handler()
+
+        //todo handlernya deprecated dan kalau bisa delaynya(dibawah) dikurangi
+        handler.postDelayed({
+            runBlocking {
+                async(Dispatchers.IO) { repo.devicePopulateDB() }.await()
+                async(Dispatchers.IO) { repo.historyPopulateDB() }.await()
+            }
+            findNavController().navigate(R.id.fragment_home_container)
+        }, 500);
     }
 }
