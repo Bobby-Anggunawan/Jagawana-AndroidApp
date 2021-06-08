@@ -6,7 +6,9 @@ Capstone project Bangkit
 This is a client application of Jagawana, an illegal logging prevention app. This app displays where the IoT device is located and displays all the events captured by the connected IoT device. This application also in real time notifies the user if an emergency event occurs and shows the location of the event.
 
 ### Screenshot
-//todo
+![Home](https://github.com/Bobby-Anggunawan/Jagawana-AndroidApp/blob/master/readme_assets/AppScreenshot1.jpg)
+![Map](https://github.com/Bobby-Anggunawan/Jagawana-AndroidApp/blob/master/readme_assets/AppScreenshot2.jpg)
+![Region History](https://github.com/Bobby-Anggunawan/Jagawana-AndroidApp/blob/master/readme_assets/AppScreenshot3.jpeg)
 
 ## How To Make Thing Like We Made
 
