@@ -1,17 +1,22 @@
 package com.bangkit.jagawana.ui
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bangkit.jagawana.R
 import com.bangkit.jagawana.data.MyRepository
-import com.bangkit.jagawana.data.RemoteDataSource
 import com.bangkit.jagawana.data.model.DeviceDataMod
 import com.bangkit.jagawana.databinding.FragmentMapsBinding
 import com.bangkit.jagawana.utility.function.TimeDiff
@@ -26,6 +31,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
@@ -36,12 +42,28 @@ import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 
 
-class MapsFragment : Fragment() {
+class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
+    GoogleMap.OnMyLocationClickListener,
+    ActivityCompat.OnRequestPermissionsResultCallback {
     private lateinit var binding: FragmentMapsBinding
     private var collapsBefore = true
     lateinit var repo: MyRepository
 
+    private var permissionDenied = false
+    lateinit var map: GoogleMap
+
+    companion object{
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+    }
+
+
     private val callback = OnMapReadyCallback { googleMap ->
+        map = googleMap
+        googleMap.setOnMyLocationButtonClickListener(this)
+        googleMap.setOnMyLocationClickListener(this)
+        enableMyLocation()
+
+
         googleMap.setMapType(MAP_TYPE_HYBRID)
 
 
@@ -138,4 +160,71 @@ class MapsFragment : Fragment() {
             }
         })
     }
+
+
+
+    //show my location
+    private fun enableMyLocation() {
+        if (!::map.isInitialized) return
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED) {
+            map.isMyLocationEnabled = true
+        } else {
+            // Permission to access the location is missing. Show rationale and request permission
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE
+            )
+        }
+    }
+
+    override fun onMyLocationButtonClick(): Boolean {
+        Toast.makeText(requireContext(), "MyLocation button clicked", Toast.LENGTH_SHORT).show()
+        // Return false so that we don't consume the event and the default behavior still occurs
+        // (the camera animates to the user's current position).
+        return false
+    }
+
+    override fun onMyLocationClick(location: Location) {
+        Toast.makeText(requireContext(), "Current location:\n$location", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
+            return
+        }
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            // Enable the my location layer if the permission has been granted.
+            enableMyLocation()
+        } else {
+            // Permission was denied. Display an error message
+            // Display the missing permission error dialog when the fragments resume.
+            permissionDenied = true
+        }
+    }
+
+
+
+    //todo ini tadi kuubah
+    override fun onResume() {
+        super.onResume()
+
+        if (permissionDenied) {
+            // Permission was not granted, display error dialog.
+            showMissingPermissionError()
+            permissionDenied = false
+        }
+    }
+
+    /**
+     * Displays a dialog with error message explaining that the location permission is missing.
+     */
+    private fun showMissingPermissionError() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setMessage("Permission lokasi tidak diberikan")
+            .setPositiveButton("Ok") { dialog, which ->
+                // Respond to positive button press
+            }
+            .show()
+    }
+
+
 }

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,8 @@ import com.bangkit.jagawana.ui.adapter.RegionLListAdapter
 import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class DeviceListFragment : Fragment() {
@@ -32,21 +35,16 @@ class DeviceListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val data: ArrayList<DeviceListAdapter.RowData> = arrayListOf()
-        lateinit var realData : Array<DeviceDataMod>
-        runBlocking {
-            val getFromApi = async(Dispatchers.IO) { RemoteDataSource().getAllDevice() }
-            realData = getFromApi.await()
 
-            val getFromApi2 = async(Dispatchers.IO) { MyRepository(requireContext()).getRegionList() }
-            getFromApi2.await().forEach { regionName ->
-                data.add(DeviceListAdapter.RowData(null, regionName.nama, true))
-                realData.forEach { device ->
-                    if(device.region == regionName.nama) data.add(DeviceListAdapter.RowData(device.idDevice, null, false))
-                }
+        val repo = MyRepository(requireContext())
+
+        viewLifecycleOwner.lifecycleScope.launch{
+            repo.getAllDevice().collect {
+                SetAdapter(view.findViewById(R.id.listDevice), it)
             }
         }
-        SetAdapter(view.findViewById(R.id.listDevice), data)
+
+
 
         view.findViewById<MaterialToolbar>(R.id.topAppBar).setNavigationOnClickListener {
             requireActivity().onBackPressed()

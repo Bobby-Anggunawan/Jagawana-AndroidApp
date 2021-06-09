@@ -1,10 +1,13 @@
 package com.bangkit.jagawana.utility.function
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.bangkit.jagawana.MainActivity
@@ -26,12 +29,15 @@ object Notifikasi {
         val notificationManagerCompat =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val builder = NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(R.drawable.jagawana_logo)
-            .setContentTitle("Jagawana")
+            .setSmallIcon(R.drawable.jagawana_logo_transparan)
+            .setContentTitle("Warning")
             .setContentText(message)
+            .setTicker("Aktivitas mencurigakan terdeteksi!!")
             .setAutoCancel(true)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.PRIORITY_MAX)
             .setContentIntent(pendingIntent)
+            .setVibrate(longArrayOf(500, 500, 500, 500, 500))
+            .setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+ "://" +context.getPackageName()+"/"+R.raw.warning))
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(

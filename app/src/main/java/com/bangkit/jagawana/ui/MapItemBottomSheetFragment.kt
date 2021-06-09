@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.bangkit.jagawana.R
 import com.bangkit.jagawana.data.MyRepository
-import com.bangkit.jagawana.data.RemoteDataSource
 import com.bangkit.jagawana.data.model.DeviceDataMod
 import com.bangkit.jagawana.databinding.FragmentMapItemBottomSheetBinding
 import com.bangkit.jagawana.databinding.FragmentMapsBinding

@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import com.bangkit.jagawana.R
+import com.bangkit.jagawana.data.MyRepository
 import com.bangkit.jagawana.data.RemoteDataSource
 import com.bangkit.jagawana.data.model.DeviceDataMod
 import com.bangkit.jagawana.data.model.EventResultDataMod
@@ -17,9 +19,9 @@ import com.bangkit.jagawana.databinding.FragmentMapsBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.appbar.MaterialToolbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 
 class DetailEventFragment : Fragment() {
 
@@ -33,6 +35,7 @@ class DetailEventFragment : Fragment() {
         return binding.root
     }
 
+    @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -40,35 +43,36 @@ class DetailEventFragment : Fragment() {
             requireActivity().onBackPressed()
         }
 
+        val repo = MyRepository(requireContext())
+
         val bundle = this.arguments
         if (bundle != null) {
             val clipId = bundle.getString("clipID", "")
-            lateinit var singleResult: EventResultDataMod
-            runBlocking {
-                val getFromApi = async(Dispatchers.IO) { RemoteDataSource().getSingleResult(clipId) }
-                singleResult = getFromApi.await()
-            }
 
-            binding.namaRegion.text = singleResult.idClip
-            binding.recoedId.text = singleResult.idAudioFile
-            binding.clip.text = singleResult.idClip
-            binding.device.text = singleResult.idDevice
-            binding.region.text = singleResult.region
-            binding.result.text = singleResult.classifyResult
-            binding.timestamp.text = singleResult.timestamp
+            viewLifecycleOwner.lifecycleScope.launch{
+                repo.getEvent(clipId).collect{ event->
+                    binding.namaRegion.text = event.idClip
+                    binding.recoedId.text = event.idAudioFile
+                    binding.clip.text = event.idClip
+                    binding.device.text = event.idDevice
+                    binding.region.text = event.region
+                    binding.result.text = event.classifyResult
+                    binding.timestamp.text = event.timestamp
 
-            binding.playButton.setOnClickListener {
-                val url = singleResult.link
-                val mediaPlayer = MediaPlayer().apply {
-                    setAudioAttributes(
-                        AudioAttributes.Builder()
-                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                            .setUsage(AudioAttributes.USAGE_MEDIA)
-                            .build()
-                    )
-                    setDataSource(url)
-                    prepare() // might take long! (for buffering, etc)
-                    start()
+                    binding.playButton.setOnClickListener {
+                        val url = event.link
+                        val mediaPlayer = MediaPlayer().apply {
+                            setAudioAttributes(
+                                AudioAttributes.Builder()
+                                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                                    .build()
+                            )
+                            setDataSource(url)
+                            prepare() // might take long! (for buffering, etc)
+                            start()
+                        }
+                    }
                 }
             }
         }

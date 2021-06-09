@@ -31,6 +31,9 @@ object MyDatabase {
 
         @Query("Delete from EventResultDataMod" )
         fun deleteAllHistory()
+
+        @Query("select * from EventResultDataMod where idClip = :id")
+        fun getEvent(id: String): EventResultDataMod
     }
 
     @Database(entities = arrayOf(DeviceDataMod::class, EventResultDataMod::class), version = 1)

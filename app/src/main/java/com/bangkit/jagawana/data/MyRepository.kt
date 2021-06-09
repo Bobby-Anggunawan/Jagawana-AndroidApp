@@ -7,6 +7,7 @@ import androidx.room.Room
 import com.bangkit.jagawana.data.model.DetailDeviceDataMod
 import com.bangkit.jagawana.data.model.DeviceDataMod
 import com.bangkit.jagawana.data.model.EventResultDataMod
+import com.bangkit.jagawana.ui.adapter.DeviceListAdapter
 import com.bangkit.jagawana.ui.adapter.NotificationAdapter
 import com.bangkit.jagawana.ui.adapter.RegionHistoryAdapter
 import com.bangkit.jagawana.ui.adapter.RegionLListAdapter
@@ -42,20 +43,42 @@ class MyRepository(val context: Context) {
     ).build()
 
     fun devicePopulateDB(){
-        val data = remote.getAllDevice()
+        try{
+            val data = remote.getAllDevice()
 
-        db.userDao().deleteAllDevice()
-        data.forEach {
-            db.userDao().newDevice(it)
+            if(data.count() > 0){
+                db.userDao().deleteAllDevice()
+                data.forEach {
+                    db.userDao().newDevice(it)
+                }
+            }
+            else{
+                throw NoSuchElementException("data dari remote kosong")
+            }
+        }
+        catch (e: Exception){
+            print(e.message.toString())
+            //todo gimana masukin data dummy kalau db beneran kosong
         }
     }
 
     fun historyPopulateDB(){
-        val data = remote.getAllResult()
+        try{
+            val data = remote.getAllResult()
 
-        db.userDao().deleteAllHistory()
-        data.forEach {
-            db.userDao().newHistory(it)
+            if(data.count() > 0){
+                db.userDao().deleteAllHistory()
+                data.forEach {
+                    db.userDao().newHistory(it)
+                }
+            }
+            else{
+                throw NoSuchElementException("data dari remote kosong")
+            }
+        }
+        catch (e: Exception){
+            print(e.message.toString())
+            //todo gimana masukin data dummy kalau db beneran kosong
         }
     }
 
@@ -178,16 +201,29 @@ class MyRepository(val context: Context) {
         return ret
     }
 
-    //request tanpa diubah
-    fun getAllDevice(): Flow<List<DeviceDataMod>> {
+    //untuk di device list fragment
+    fun getAllDevice(): Flow<ArrayList<DeviceListAdapter.RowData>> {
         return flow{
-            emit(db.userDao().getAllDevice())
+            val data: ArrayList<DeviceListAdapter.RowData> = arrayListOf()
+            val allDevice = withContext(Dispatchers.IO){db.userDao().getAllDevice()}
+
+            val regionList = withContext(Dispatchers.IO){getRegionList()}
+
+            regionList.forEach { region->
+                data.add(DeviceListAdapter.RowData(null, region.nama, true))
+                allDevice.forEach { device->
+                    if(device.region == region.nama) data.add(DeviceListAdapter.RowData(device.idDevice, null, false))
+                }
+            }
+
+            emit(data)
         }
     }
 
-    fun getAllEvent(): Flow<List<EventResultDataMod>>{
+    fun getEvent(idClip: String): Flow<EventResultDataMod>{
         return flow{
-            emit(db.userDao().getAllHistory())
+            val ret = withContext(Dispatchers.IO){db.userDao().getEvent(idClip)}
+            emit(ret)
         }
     }
 

@@ -4,6 +4,7 @@
 Capstone project Bangkit 2021
 
 [![Mockup](https://img.shields.io/badge/mockup-PSDMockups-informational.svg)](https://www.psdmockups.com/mobile-android-samsung-smartphone-psd-mockup/)
+[![Ringtone](https://img.shields.io/badge/ringtone-Zedge-informational.svg)](https://www.zedge.net/ringtone/03b5aaa6-a9fc-3a09-9543-122667669467)
 ![Build](https://img.shields.io/badge/build-passing-success.svg)
 ![Server](https://img.shields.io/badge/server_status-Active-critical.svg)
 ![Version](https://img.shields.io/badge/kotlin-1.5.0-informational.svg)
@@ -31,6 +32,10 @@ This is a client application of Jagawana, an illegal logging prevention app. Thi
 * [Machine Learning](https://github.com/nicorenaldo/jagawana-ml)
 
 ## How To Make Thing Like We Made
+
+### Getting Started
+
+
 
 ### Tutorial List
 

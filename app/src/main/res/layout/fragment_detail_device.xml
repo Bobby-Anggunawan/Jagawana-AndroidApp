@@ -21,103 +21,73 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@+id/linearLayout4"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="20dp">
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:text="Last Transmission"
+            android:textColor="?attr/colorPrimary"
+            android:textStyle="bold"
+            android:textSize="16dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Last Transmission" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Status" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Location" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Total Recording" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout4"
+        <TextView
+            android:id="@+id/lastTransmission"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:orientation="vertical"
-            app:layout_constraintStart_toEndOf="@+id/linearLayout"
-            app:layout_constraintTop_toTopOf="parent">
+            android:text="Last Transmission"
+            android:layout_marginBottom="10dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=":" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=":" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=":" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=":" />
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintStart_toEndOf="@+id/linearLayout4"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="20dp">
+            android:text="Status"
+            android:textColor="?attr/colorPrimary"
+            android:textStyle="bold"
+            android:textSize="16dp"/>
 
-            <TextView
-                android:id="@+id/lastTransmission"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Last Transmission" />
+        <TextView
+            android:id="@+id/Status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            android:layout_marginBottom="10dp"/>
 
-            <TextView
-                android:id="@+id/Status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Status" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location"
+            android:textColor="?attr/colorPrimary"
+            android:textStyle="bold"
+            android:textSize="16dp"/>
 
-            <TextView
-                android:id="@+id/location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Location" />
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location"
+            android:layout_marginBottom="10dp"/>
 
-            <TextView
-                android:id="@+id/totalRecord"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Total Recording" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Recording"
+            android:textColor="?attr/colorPrimary"
+            android:textStyle="bold"
+            android:textSize="16dp"/>
+
+        <TextView
+            android:id="@+id/totalRecord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Recording" />
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
