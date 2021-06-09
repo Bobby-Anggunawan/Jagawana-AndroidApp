@@ -14,6 +14,7 @@ import com.bangkit.jagawana.data.RemoteDataSource
 import com.bangkit.jagawana.data.model.DeviceDataMod
 import com.bangkit.jagawana.ui.adapter.RegionLListAdapter
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -21,6 +22,14 @@ import kotlinx.coroutines.runBlocking
 class RegionListFragment : Fragment() {
 
     lateinit var repo: MyRepository
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        //animation https://material.io/develop/android/theming/motion#shared-axis
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, /* forward= */ true)
+        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, /* forward= */ false)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

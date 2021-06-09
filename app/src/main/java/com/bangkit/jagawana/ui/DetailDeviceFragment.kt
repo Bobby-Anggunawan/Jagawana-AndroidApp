@@ -17,6 +17,7 @@ import com.bangkit.jagawana.databinding.FragmentDetailDeviceBinding
 import com.bangkit.jagawana.databinding.FragmentDetailEventBinding
 import com.bangkit.jagawana.ui.adapter.RegionHistoryAdapter
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -24,6 +25,14 @@ import kotlinx.coroutines.runBlocking
 class DetailDeviceFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailDeviceBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        //animation https://material.io/develop/android/theming/motion#shared-axis
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, /* forward= */ true)
+        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, /* forward= */ false)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

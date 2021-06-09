@@ -14,11 +14,20 @@ import com.bangkit.jagawana.R
 import com.bangkit.jagawana.data.MyRepository
 import com.bangkit.jagawana.databinding.FragmentHomeContainerBinding
 import com.bangkit.jagawana.databinding.FragmentMapsBinding
+import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class HomeContainerFragment : Fragment() {
     private lateinit var binding: FragmentHomeContainerBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        //animation https://material.io/develop/android/theming/motion#shared-axis
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, /* forward= */ true)
+        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, /* forward= */ false)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -9,11 +9,20 @@ import androidx.navigation.fragment.findNavController
 import com.bangkit.jagawana.R
 import com.bangkit.jagawana.databinding.FragmentContactBinding
 import com.bangkit.jagawana.databinding.FragmentMapsBinding
+import com.google.android.material.transition.MaterialSharedAxis
 
 
 class ContactFragment : Fragment() {
 
     private lateinit var binding: FragmentContactBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        //animation https://material.io/develop/android/theming/motion#shared-axis
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, /* forward= */ true)
+        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, /* forward= */ false)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
