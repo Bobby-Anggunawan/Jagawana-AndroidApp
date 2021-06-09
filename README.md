@@ -41,7 +41,9 @@ If you build this application an error will occur. That's because this applicati
 Once you have the api key, follow these steps:
 * In the main menu, select File > New > Android Resource File
 * Name it google_maps_api and in the source set field select debug
+
 ![Add Api Key](https://github.com/Bobby-Anggunawan/Jagawana-AndroidApp/blob/master/readme_assets/add_api_key.JPG)
+
 * Fill the file with the code below and replace YourApiKeyHere with the api key you created in the previous step 
 ```xml
 <resources>
