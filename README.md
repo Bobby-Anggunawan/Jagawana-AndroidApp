@@ -33,9 +33,23 @@ This is a client application of Jagawana, an illegal logging prevention app. Thi
 
 ## How To Make Thing Like We Made
 
-### Getting Started
+### How To Build This Project
 
+If you build this application an error will occur. That's because this application requires an API Key to display the Google Map. Follow this tutorial to generate Google map api key
+>[Set up in Cloud Console](https://developers.google.com/maps/documentation/android-sdk/start#set_up_in_cloud_console)(Note: ignore the other steps from this link)
 
+Once you have the api key, follow these steps:
+* In the main menu, select File > New > Android Resource File
+* Name it google_maps_api and in the source set field select debug
+![Add Api Key](https://github.com/Bobby-Anggunawan/Jagawana-AndroidApp/blob/master/readme_assets/add_api_key.JPG)
+* Fill the file with the code below and replace YourApiKeyHere with the api key you created in the previous step 
+```xml
+<resources>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">YourApiKeyHere</string>
+</resources>
+```
+* Repeat the above steps from step 1. But this time in the source set field select release.
+* Now you can build this project as usual with android studio 
 
 ### Tutorial List
 
