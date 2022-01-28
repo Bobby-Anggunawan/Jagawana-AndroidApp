@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:jagawana_android_app/constant.dart';
 import 'package:jagawana_android_app/data/repository.dart';
@@ -6,8 +7,10 @@ import 'package:jagawana_android_app/data/repository.dart';
 class ForestStatus extends StatelessWidget {
   const ForestStatus({Key? key}) : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
+
     return Container(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -30,7 +33,19 @@ class ForestStatus extends StatelessWidget {
                       ),
                     )
                   ),
-                  Text("${MyRepository.regionDeviceCount(MyRepository.listRegion[MyRepository.activeRegionIndex].regionName)} Perangkat Terhubung"),
+
+
+                  //Text("${MyRepository.regionDeviceCount(MyRepository.listRegion[MyRepository.activeRegionIndex].regionName)} Perangkat Terhubung"),
+                  //Text("2 suara terdeteksi"),
+
+                  StreamBuilder(
+                    stream: FirebaseFirestore.instance.collection('event').doc('mcW7xwshiBMStlgztYu2').snapshots(),
+                    builder: (context, snapshot){
+                      var jlhBahaya = MyRepository.jlhBahaya();
+                      if(jlhBahaya>0) return Text("$jlhBahaya Suara Terdeteksi");
+                      return Text("${MyRepository.regionDeviceCount(MyRepository.listRegion[MyRepository.activeRegionIndex].regionName)} Perangkat Terhubung");
+                    },
+                  ),
                   Text(
                       MyRepository.listRegion[MyRepository.activeRegionIndex].regionName,
                       style: TextStyle(

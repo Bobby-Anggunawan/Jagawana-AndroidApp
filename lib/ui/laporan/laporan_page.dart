@@ -31,7 +31,10 @@ class _LaporanPageState extends State<LaporanPage> {
       ),
       body: ListView(
         children: [
-          Text("Overview", style: TextStyle(fontWeight: FontWeight.bold, fontSize: Constant.TEXTSIZE_BIG)),
+          Padding(
+            child: Text("Overview", style: TextStyle(fontWeight: FontWeight.bold, fontSize: Constant.TEXTSIZE_BIG, color: My_Color_Scheme.MAIN_COLOR)),
+            padding: EdgeInsets.only(top: Constant.PADDING_2, left: Constant.PADDING_2),
+          ),
           FutureBuilder<List<OverviewTableData>>(
             future: _overviewTable,
             builder: (context, snapshot){
@@ -45,19 +48,19 @@ class _LaporanPageState extends State<LaporanPage> {
                         DataColumn(
                           label: Text(
                             'Perangkat',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(fontWeight: FontWeight.bold, color: My_Color_Scheme.MAIN_COLOR),
                           ),
                         ),
                         DataColumn(
                           label: Text(
                             'Chainsaw',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(fontWeight: FontWeight.bold, color: My_Color_Scheme.MAIN_COLOR),
                           ),
                         ),
                         DataColumn(
                           label: Text(
                             'Api',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(fontWeight: FontWeight.bold, color: My_Color_Scheme.MAIN_COLOR),
                           ),
                         ),
                         DataColumn(
@@ -72,13 +75,13 @@ class _LaporanPageState extends State<LaporanPage> {
                             (sale) => DataRow(
                             cells: [
                               DataCell(
-                                  Text(sale.perangkat)
+                                  Text(sale.perangkat, style: TextStyle(color: My_Color_Scheme.SECOND_FOREGROUND))
                               ),
                               DataCell(
-                                Text(sale.chainsaw.toString()),
+                                Text(sale.chainsaw.toString(), style: TextStyle(color: My_Color_Scheme.SECOND_FOREGROUND)),
                               ),
                               DataCell(
-                                Text(sale.api.toString()),
+                                Text(sale.api.toString(), style: TextStyle(color: My_Color_Scheme.SECOND_FOREGROUND)),
                               ),
                               DataCell(
                                 Text(sale.pistol.toString()),
@@ -91,7 +94,11 @@ class _LaporanPageState extends State<LaporanPage> {
               return Text("Loading..");
             }
           ),
-          Text("Detail", style: TextStyle(fontWeight: FontWeight.bold, fontSize: Constant.TEXTSIZE_BIG)),
+
+          Padding(
+            child: Text("Detail", style: TextStyle(fontWeight: FontWeight.bold, fontSize: Constant.TEXTSIZE_BIG, color: My_Color_Scheme.MAIN_COLOR)),
+            padding: EdgeInsets.only(top: Constant.PADDING_2, left: Constant.PADDING_2),
+          ),
 
           FutureBuilder<List<EventData>>(
             future: _detailList,
@@ -112,6 +119,16 @@ class _LaporanPageState extends State<LaporanPage> {
               return Text("Loading..");
             }
           ),
+
+          Padding(
+            padding: EdgeInsets.all(Constant.PADDING_2),
+            child: ElevatedButton(
+              child: Text("Unduh"),
+              onPressed: (){
+                //todo add onpress
+              },
+            )
+          )
 
         ]
       )

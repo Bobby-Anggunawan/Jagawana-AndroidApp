@@ -61,7 +61,7 @@ class _MyBottomSheetState extends State<MyBottomSheet> with SingleTickerProvider
                   color: My_Color_Scheme.MAIN_FOREGROUND,
                   height: Tween<double>(
                     begin: collapsingHeight,
-                    end: screenSize.height - 20,
+                    end: screenSize.height,
                   ).animate(_animationController!).value,
                   child: Stack(
                       children: [

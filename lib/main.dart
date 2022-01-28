@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:jagawana_android_app/constant.dart';
 import 'package:jagawana_android_app/ui/chat_page.dart';
@@ -12,6 +13,7 @@ import 'package:jagawana_android_app/ui/map/map_page.dart';
 import 'package:jagawana_android_app/ui/home/navigation_pages/notification_page.dart';
 import 'package:jagawana_android_app/ui/sound_list/SoundListPage.dart';
 import 'package:jagawana_android_app/ui/test_page.dart';
+import 'data/repository.dart';
 import 'ui/home/home_page.dart';
 import 'ui/other_page/error_page.dart';
 import 'ui/other_page/splash_page.dart';
@@ -78,7 +80,9 @@ class _InitAppState extends State<InitApp> {
 
 
 
+
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: FutureBuilder(
         // Initialize FlutterFire:
         future: _initialization,
@@ -115,6 +119,18 @@ class _InitAppState extends State<InitApp> {
               }
             });
 
+
+            //=======================
+            //todo this my code
+            //listen nitification from stream
+            FirebaseFirestore.instance.collection('event').doc('mcW7xwshiBMStlgztYu2').snapshots().listen((event) {
+              print(event["timestamp"]);
+              MyRepository.lastEventTimestamp = event["timestamp"];
+              //todo tambah notifikasi
+            });
+            //========================
+
+
             return MyNavigation();
           }
 
@@ -132,9 +148,12 @@ class _InitAppState extends State<InitApp> {
 class MyNavigation extends StatelessWidget {
   const MyNavigation({Key? key}) : super(key: key);
 
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       routes: {
         '/test': (context) => TestPage(), //todo nanti kalau sudah jadi hapus ini
         '/home': (context) => HomePage(),

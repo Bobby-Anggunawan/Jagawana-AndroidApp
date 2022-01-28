@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:jagawana_android_app/data/model/agruments/device_detail_arg.dart';
 import 'package:jagawana_android_app/data/model/device_list_data.dart';
 import 'package:http/http.dart' as http;
@@ -9,6 +10,8 @@ import 'package:jagawana_android_app/data/model/region_data.dart';
 import 'model/overview_table_data.dart';
 
 class MyRepository{
+
+  static int lastEventTimestamp = 0;
 
   static List<DeviceList>? listOfDevice = null;
   static List<RegionData> listRegion = [
@@ -157,12 +160,39 @@ class MyRepository{
   //todo gak bagus codenya
   static int regionDeviceCount(String regionName){
     int ret = 0;
-    if(listOfDevice==null) return 0;
-    else{
-      listOfDevice!.forEach((element) {
-        if(element.region == regionName) ret++;
-      });
-      return ret;
-    }
+    if(listEvent == null) return ret;
+    listOfDevice!.forEach((element) {
+      if (element.region == regionName) ret++;
+    });
+    return ret;
   }
+
+  static int selisih(int a, int b){
+    if(a>b) return a-b;
+    else return b-a;
+  }
+
+  //todo selisihnya satu jam
+  static int jlhBahaya(){
+
+    var region = listRegion[MyRepository.activeRegionIndex].regionName;
+    int ret = 0;
+    if(listEvent == null) return ret;
+    else{
+      listEvent!.forEach((element) {
+        if (element.region == region && selisih(DateTime.parse(element.timestamp).millisecondsSinceEpoch, lastEventTimestamp) < 3600000) ret++;
+      });
+    }
+    return ret;
+  }
+
+  static bool isDangerDevice(String deviceName){
+    var region = listRegion[MyRepository.activeRegionIndex].regionName;
+    bool ret = false;
+    listEvent!.forEach((element){
+      if(selisih(DateTime.parse(element.timestamp).millisecondsSinceEpoch, lastEventTimestamp) < 3600000 && deviceName == element.idDevice) ret = true;
+    });
+    return ret;
+  }
+
 }

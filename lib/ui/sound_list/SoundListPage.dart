@@ -21,7 +21,7 @@ class _SoundListPageState extends State<SoundListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("SoundList"),
+        title: Text("Rekaman Suara"),
       ),
       body: FutureBuilder<List<EventData>>(
           future: _listEvent,

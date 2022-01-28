@@ -5,6 +5,8 @@ import 'package:http/http.dart';
 import 'package:jagawana_android_app/data/repository.dart';
 import 'package:jagawana_android_app/ui/map/map_bottom_sheet.dart';
 
+import 'map/map_page.dart';
+
 //todo cuma untuk test widget
 class TestPage extends StatefulWidget {
   const TestPage({Key? key}) : super(key: key);
@@ -32,14 +34,12 @@ class _TestPageState extends State<TestPage>{
               appBar: AppBar(
                 title: Text("ini test"),
               ),
-              body: Center(child: Text("ini tengah"),)
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Material(
-              color: Colors.transparent,
-              child: MyBottomSheet(),
-            ),
+              body: ListView(
+                children: [
+                  Text(MyRepository.listEvent![0].timestamp),
+                  Text(DateTime.parse(MyRepository.listEvent![0].timestamp).millisecondsSinceEpoch.toString())
+                ]
+              )
           ),
         ]
     );

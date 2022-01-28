@@ -5,6 +5,8 @@ import 'package:jagawana_android_app/ui/items/notificarion_items.dart';
 import 'package:jagawana_android_app/ui/other_page/error_page.dart';
 import 'package:jagawana_android_app/ui/other_page/loading_page.dart';
 
+import '../../../constant.dart';
+
 class ForestHistory extends StatefulWidget {
   const ForestHistory({Key? key}) : super(key: key);
 
@@ -21,6 +23,7 @@ class _ForestHistoryState extends State<ForestHistory> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Riwayat"),
+        elevation: 0
       ),
       body: FutureBuilder<List<EventData>>(
           future: _listEvent,
@@ -29,12 +32,23 @@ class _ForestHistoryState extends State<ForestHistory> {
               return ErrorPage();
             }
             if (snapshot.connectionState == ConnectionState.done || snapshot.data != null){
-              return ListView.builder(
-
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (BuildContext context, int index){
-                    return NotificationItem(data: snapshot.data![index]);
-                  }
+              return ListView(
+                children:[
+                  Container(
+                    padding: EdgeInsets.all(Constant.PADDING_0_5),
+                    child: Text(snapshot.data![0].region, textAlign: TextAlign.center, style: TextStyle(color: My_Color_Scheme.MAIN_FOREGROUND),),
+                    decoration: BoxDecoration(
+                      color: Colors.teal[700]
+                    ),
+                  ),
+                  ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (BuildContext context, int index){
+                        return NotificationItem(data: snapshot.data![index]);
+                      }
+                  )
+                ]
               );
             }
             return LoadingPage();

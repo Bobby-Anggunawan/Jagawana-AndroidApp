@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jagawana_android_app/constant.dart';
@@ -30,6 +31,7 @@ class _HomePageState extends State<HomePage> {
       NotificationPage()
     ];
 
+
     return Scaffold(
         key: _key,
         appBar: AppBar(
@@ -60,8 +62,8 @@ class _HomePageState extends State<HomePage> {
                 inactiveColorPrimary: My_Color_Scheme.MAIN_FOREGROUND,
               ),
               PersistentBottomNavBarItem(
-                icon: Icon(CupertinoIcons.settings),
-                title: ("Settings"),
+                icon: Icon(CupertinoIcons.bell),
+                title: ("Notifikasi"),
                 activeColorPrimary: My_Color_Scheme.MAIN_FOREGROUND,
                 inactiveColorPrimary: My_Color_Scheme.MAIN_FOREGROUND,
               ),

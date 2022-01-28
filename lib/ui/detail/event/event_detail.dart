@@ -22,7 +22,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          args.idClip,
+          "Detail",
         ),
       ),
 
@@ -31,12 +31,16 @@ class _EventDetailPageState extends State<EventDetailPage> {
         child: ListView(
           physics: NeverScrollableScrollPhysics(),
           children: [
-            DetailItem(header: "Region", content: args.region),
-            DetailItem(header: "Result", content: args.classifyResult),
-            DetailItem(header: "Device", content: args.idDevice),
-            DetailItem(header: "Time", content: args.timestamp.substring(0, 19)),
-            DetailItem(header: "Longitude", content: args.longitude.toString()),
-            DetailItem(header: "Latitude", content: args.latitude.toString()),
+            Padding(
+              child: Text("Recording Information", style: TextStyle(color: My_Color_Scheme.SECOND_FOREGROUND, fontWeight: FontWeight.bold, fontSize: 20)),
+              padding: EdgeInsets.only(bottom: Constant.PADDING_1)
+            ),
+
+            DetailItem(header: "Perangkat", content: args.idDevice),
+            DetailItem(header: "Wilayah", content: args.region),
+            DetailItem(header: "Hasil Prediksi", content: args.classifyResult),
+            DetailItem(header: "ID Rekaman", content: args.idClip),
+            DetailItem(header: "Waktu Terdeteksi", content: args.timestamp.substring(0, 19)),
             AudioPlayerWidget(audioUrl: args.link)
           ],
         )
